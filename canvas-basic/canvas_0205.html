@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>canvas test</title>
+    <style>
+        #canvas { background-color: #eeeeee;}
+    </style>
+</head>
+<body>
+    <canvas id="canvas" width="500" height="300"></canvas>
+
+    <script>
+        function radian(degree){
+            return degree * Math.PI / 180;
+        }
+
+        const canvas = document.querySelector('#canvas');
+        const context = canvas.getContext('2d');
+
+
+        //angry
+        context.beginPath();
+        context.arc(250, 150, 120, 0, radian(360), false);
+        context.stroke();
+
+        context.beginPath();
+        context.moveTo(220,100);
+        context.lineTo (170, 70);
+        context.stroke();
+
+        context.beginPath();
+        context.moveTo(200,105);
+        context.arc(205, 105, 10, 0, radian(360), false);
+        context.fill();
+       
+        context.beginPath();
+        context.moveTo(270,100);
+        context.lineTo (325, 70);
+        context.stroke();
+             
+        context.beginPath();
+        context.moveTo(280,105);
+        context.arc(285, 105, 10, 0, radian(360), false);
+        context.fill();
+
+        context.beginPath();
+        context.arc(245, 195, 30, 0, radian(360), false);
+        context.fill();
+
+        context.beginPath();
+        context.arc(245, 205, 30, 0, radian(360), false);
+        context.fill();
+
+        context.beginPath();
+        context.arc(245, 215, 30, 0, radian(360), false);
+        context.fill();
+
+
+
+
+    </script>
+</body>
+</html>
