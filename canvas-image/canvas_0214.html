@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>canvas image</title>
+    <style>
+        canvas { background: #eeeeee;}
+    </style>
+</head>
+<body>
+    <canvas width="700" height="600"></canvas>
+    <p>
+        void ctx.drawImage(image, dx, dy);<br>
+        이미지 사이즈 |
+        void ctx.drawImage(image, dx, dy, dWidth, dHeight);<br>
+        크롭이미지 | 
+        void ctx.drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);<br>
+    </p>
+    <script>
+        const canvas = document.querySelector('canvas');
+        const context = canvas.getContext('2d');
+
+        const imgElem = new Image();
+        imgElem.src = 'http://chohee.dothome.co.kr/images/mebg.png';
+        imgElem.addEventListener('load', () => {
+            context.drawImage(imgElem, 80, 80);
+            context.drawImage(imgElem, 90, 90, 100, 80);
+            context.drawImage(imgElem, 150, 150, 200, 200, 0, 0, 100, 100);
+        });
+    </script>
+</body>
+</html>
