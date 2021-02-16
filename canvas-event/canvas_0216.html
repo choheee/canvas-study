@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>canvas drag and drop</title>
+</head>
+<body>
+    <canvas width="600" height="500"></canvas>
+
+    <script>
+        const canvas = document.querySelector('canvas');
+        const context = canvas.getContext('2d');
+        const WIDTH = canvas.width;
+        const HEIGHT = canvas.height;
+        let x = 75;
+        let y = 50;
+        let dragok = false;
+
+        function rect(x, y, w, h) {
+            context.beginPath();
+            context.rect(x, y, w, h);
+            context.closePath();
+            context.fill();
+        }
+        function clear() {
+            context.clearRect(0, 0, WIDTH, HEIGHT);
+        }
+        function init() {
+            return setInterval(draw, 10);
+        }
+        function draw() {
+            clear();
+            context.fillStyle = "#eeeeee";
+            rect(0, 0, WIDTH, HEIGHT);
+            context.fillStyle = "green";
+            rect(x - 15, y - 15, 45, 45);
+        }
+        function myMove(e) {
+            if(dragok) {
+                x = e.pageX - canvas.offsetLeft;
+                y = e.pageY - canvas.offsetTop;
+            }
+        }
+        function myDown(e) {
+            if (e.pageX < x + 15 + canvas.offsetLeft && 
+                e.pageX > x - 15 + canvas.offsetLeft &&
+                e.pageY < y + 15 + canvas.offsetTop &&
+                e.pageY > y - 15 + canvas.offsetTop) {
+                    dragok = true;
+                    canvas.onmousemove = myMove;
+            }
+        }
+        function myUp() {
+            dragok = false;
+            canvas.onmousemove = null;
+        }
+        init();
+        canvas.onmousedown = myDown;
+        canvas.onmouseup = myUp;
+
+    </script>
+</body>
+</html>
