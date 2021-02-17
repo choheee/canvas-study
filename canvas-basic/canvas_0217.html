@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>canvas globalAlpha</title>
+    <style>
+        canvas { background-color: #eeeeee;}
+    </style>
+</head>
+<body>
+    <canvas width="600" height="500"></canvas>
+
+    <script>
+        const canvas = document.querySelector('canvas');
+        const context = canvas.getContext('2d');
+
+        function draw() {
+            //draw background
+            context.fillStyle = '#f5cd79';
+            context.fillRect(0, 0, 100, 100);
+            context.fillStyle = '#778beb';
+            context.fillRect(100, 0, 100, 100);
+            context.fillStyle = '#f78fb3';
+            context.fillRect(0, 100, 100, 100);
+            context.fillStyle = '#63cdda';
+            context.fillRect(100, 100, 100, 100);
+            context.fillStyle = '#ffffff';
+        
+            //set transparency value
+            context.globalAlpha = 0.2;
+
+            //Draw semi transparent circles
+            for (var i = 0; i < 5; i++) {
+                context.beginPath();
+                context.arc(100, 100, 15 + 15 * i, 0, Math.PI * 2, true);
+                context.fill();
+            }
+        }
+        draw();
+    </script>
+</body>
+</html>
