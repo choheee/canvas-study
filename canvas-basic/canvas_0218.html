@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>canvas lineWidth</title>
+    <style>
+        canvas { background: #eeeeee;}
+    </style>
+</head>
+<body>
+    <canvas width="600" height="500"></canvas>
+
+    <script>
+        const canvas = document.querySelector('canvas');
+        const context = canvas.getContext('2d');
+
+        function draw() {
+            for (var i = 0; i < 20; i++){
+                context.lineWidth = 1 + i;
+                context.beginPath();
+                context.strokeStyle = 'orange';
+                context.moveTo(50 + i * 25, 50);
+                context.lineTo(50 + i * 25, 450);
+                context.stroke();
+                
+            }
+        }
+        draw();
+    </script>
+</body>
+</html>
