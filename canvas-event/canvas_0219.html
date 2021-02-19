@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>paintBoard - 01</title>
+    <style>
+        canvas {background-color: #eeeeee;}
+    </style>
+</head>
+<body>
+    <canvas width="600" height="500"></canvas>
+
+    <script>
+        const canvas = document.querySelector('canvas');
+        const context = canvas.getContext('2d');
+
+        function clickHandler(이벤트) {
+            context.beginPath();
+            context.fillStyle = '#079992';
+            context.arc(이벤트.layerX, 이벤트.layerY, 10, 0, Math.PI*2, true);
+            context.fill();
+        }
+        canvas.addEventListener('click', clickHandler);
+    </script>
+    </script>
+</body>
+</html>
