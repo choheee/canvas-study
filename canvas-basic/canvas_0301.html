@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>rotate / scale</title>
+    <style>
+        #canvas1, #canvas2 { background: #eeeeee;}
+    </style>
+</head>
+<body>
+    <p>
+        <h3>rotate(angle) / scale(x, y)</h3>
+        <a href="https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Transformations#a_rotate_example" target="_blank">example</a>
+    </p>    
+    <canvas id="canvas1" width="350" height="300"></canvas>
+    <canvas id="canvas2" width="200" height="300"></canvas>
+    
+    <script>
+        const canvas = document.getElementById('canvas1');
+        const canvas2 = document.getElementById('canvas2');
+        const context = canvas1.getContext('2d');
+        const context2 = canvas2.getContext('2d');
+
+        function drawRotate() {
+            // left  : 캔버스 원점에서 회전하기
+            context.save();
+            // blue
+            context.fillStyle = 'blue';
+            context.fillRect(30, 30, 100, 100);
+            context.rotate((Math.PI / 180) * 25);
+            //gray
+            context.fillStyle = 'gray';
+            context.fillRect(30, 30, 100, 100);
+            context.restore();
+        
+            // right : 사각형 중심에서 회전하기
+            // blue
+            context.fillStyle = 'blue';
+            context.fillRect(150, 30, 100, 100);
+            context.translate(200, 80); //사각형 중심으로 이동하기
+                                        // x = x + 0.5 * width
+                                        // y = y + 0.5 * height
+            context.rotate((Math.PI / 180) * 25); // 회전
+            context.translate(-200, -80); // 예전 위치로 이동하기
+
+            // 회색 사각형 그리기
+            context.fillStyle = 'gray';
+            context.fillRect( 150, 30, 100, 100);
+            
+        }
+        drawRotate();
+
+
+        function drawScale() {
+
+            // 간단하지만 확대.축소 비율을 적용한 사각형 그리기
+            context2.save();
+            context2.scale(10, 5);
+            context2.fillRect(1, 10, 10, 10);
+            context2.restore();
+            
+            // 수평으로 대칭하기
+            context2.scale(-1.2, 1);
+            context2.font = '48px serif';
+            context2.fillText('MDN', -150, 180);
+        }
+        drawScale();
+
+    </script>
+</body>
+</html>
