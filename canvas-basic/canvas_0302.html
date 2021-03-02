@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>lineCap</title>
+    <style>
+        canvas { background: #eeeeee;}
+
+    </style>
+</head>
+<body>
+    <p>
+        <h3>lineCap : butt / round / square</h3>
+        <a href="https://developer.mozilla.org/ko/docs/Web/API/Canvas_API/Tutorial/Applying_styles_and_colors" target="_blank">Compositing example</a>
+    </p>
+    <canvas width="300" height="300"></canvas>
+    
+    <script>
+        const canvas = document.querySelector('canvas');
+        const context = canvas.getContext('2d');
+        let lineCap = ['butt', 'round', 'square'];
+
+        //Draw guides
+        context.strokeStyle = "#0099ff";
+        context.beginPath();
+        context.moveTo(50, 50);
+        context.lineTo(200, 50);
+        context.moveTo(50, 200);
+        context.lineTo(200, 200);
+        context.stroke();
+
+        //Draw lines
+        context.strokeStyle = 'blue';
+        for (let i = 0; i < lineCap.length; i++) {
+            context.lineWidth = 15;
+            context.lineCap = lineCap[i];
+            context.beginPath();
+            context.moveTo(65 + i * 50, 50);
+            context.lineTo(65 + i * 50, 200);
+            context.stroke();
+        }
+
+    </script>
+</body>
+</html>
