@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>lineJoin</title>
+    <style>
+        canvas { background: #eeeeee;}
+
+    </style>
+</head>
+<body>
+    <p>
+        <h3>lineJoin : round / bevel / miter</h3>
+        <a href="https://developer.mozilla.org/ko/docs/Web/API/Canvas_API/Tutorial/Applying_styles_and_colors#a_linejoin_example" target="_blank">example</a>
+    </p>
+    <canvas width="500" height="300"></canvas>
+    <script>
+        const canvas = document.querySelector('canvas');
+        const context = canvas.getContext('2d');
+
+        let lineJoin = ['round', 'bevel', 'miter'];
+        context.lineWidth = 10;
+        for (let i = 0; i < lineJoin.length; i++) {
+            context.lineJoin = lineJoin[i];
+            context.beginPath();
+            context.moveTo(-5, 5 + i * 40);
+            context.lineTo(35, 45 + i * 40);
+            context.lineTo(75, 5 + i * 40);
+            context.lineTo(115, 45 + i * 40);
+            context.lineTo(155, 5 + i * 40);
+            context.stroke();
+
+        }
+
+    </script>
+</body>
+</html>
