@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>An animated solar system</title>
+
+</head>
+<body>
+    <canvas width="300" height="300"></canvas>
+    <p>
+        <h3>An animated solar system</h3>
+        <a href="https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Basic_animations#an_animated_solar_system" target="_blank">example</a>
+    </p>
+    <script>
+        const canvas = document.querySelector('canvas');
+        const context = canvas.getContext('2d');
+
+        const sun = new Image();
+        const moon = new Image();
+        const earth = new Image();
+
+        function draw() {
+            context.globalCompositeOperation = 'destination-over';
+            context.clearRect(0, 0, 300, 300); // clear canvas
+            context.fillStyle = 'rgba(0, 0, 0, 0.4)';
+            context.strokeStyle = 'rgba(0, 153, 255, 0.4)';
+            context.save();
+            context.translate(150, 150);
+
+            //Earth
+            let time = new Date();
+            context.rotate(((2 * Math.PI) / 60) * time.getSeconds() + ((2 * Math.PI) / 60000) * time.getMilliseconds());
+            context.translate(105, 0);
+            context.fillRect(0, -12, 40, 24); // Shadow
+            context.drawImage(earth, -12, -12);
+
+            // Moon
+            context.save();
+            context.rotate(((2 * Math.PI) / 6) * time.getSeconds() + ((2 * Math.PI) / 6000) * time.getMilliseconds());
+            context.translate(0, 28.5);
+            context.drawImage(moon, -3.5, -3.5);
+            context.restore();
+
+            context.restore();
+
+            context.beginPath();
+            context.arc(150, 150, 105, 0, Math.PI * 2, false); // Earth orbit
+            context.stroke();
+
+            context.drawImage(sun, 0, 0, 300, 300);
+
+            window.requestAnimationFrame(draw);
+        }
+
+        function init() {
+            sun.src = 'https://mdn.mozillademos.org/files/1456/Canvas_sun.png';
+            moon.src = 'https://mdn.mozillademos.org/files/1443/Canvas_moon.png';
+            earth.src = 'https://mdn.mozillademos.org/files/1429/Canvas_earth.png';
+            window.requestAnimationFrame(draw);
+        }
+        init();
+    </script>
+</body>
+</html>
