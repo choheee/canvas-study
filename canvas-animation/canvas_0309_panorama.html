@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A looping panorama</title>
+    <style>
+        canvas { background: #eeeeee;}
+    </style>
+</head>
+<body>
+    <p>
+        <h2>A looping panorama</h2>
+        <a href="https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Basic_animations#a_looping_panorama" target="_blank">example</a>
+    </p>
+    <canvas id="canvas" width="800" height="200"></canvas>
+
+    <script>
+    const canvas = document.getElementById('canvas');
+    const context = canvas.getContext('2d');
+
+    const imgElem = new Image();
+
+    // User Variables - customize these to change the image being scrolled, its
+    // direction, and the speed.
+
+    imgElem.src = 'https://mdn.mozillademos.org/files/4553/Capitan_Meadows,_Yosemite_National_Park.jpg';
+    const CanvasXsize = 800;
+    const CanvasYsize = 200;
+    const speed = 30; // lower is faster
+    const scale = 1.05;
+    const y = -4.5; // vertical offset
+
+    // Main program
+
+    const dx = 0.75;
+    let imgW;
+    let imgH;
+    let x = 0;
+    let clearX;
+    let clearY;
+
+    imgElem.onload = function() {
+        imgW = imgElem.width * scale;
+        imgH = imgElem.height * scale;
+
+        if (imgW > CanvasXsize) {
+            // image larger than canvas
+            x = CanvasXsize - imgW;
+        }
+        if (imgW > CanvasXsize) {
+            // image width larger than canvas
+            clearX = imgW;
+        } else {
+            clearX = CanvasXsize;
+        }
+        if (imgH > CanvasYsize) {
+            // image height larger than canvas
+            clearY = imgH;
+        } else {
+            clearY = CanvasYsize;
+        }
+        // set refresh rate
+        return setInterval(draw, speed);
+    }
+
+    function draw() {
+        context.clearRect(0, 0, clearX, clearY); // clear the canvas
+
+        if (imgW <= CanvasXsize) {
+            // reset, start from beginning
+            if (x > CanvasXsize) {
+                x = -imgW + x;
+            }
+            // draw additional image
+            if (x > 0) {
+                context.drawImage(imgElem, -imgW + x, y, imgW, imgH);
+            }
+            if (x - imgW > 0) {
+                context.drawImage(imgElem, -imgW * 2 + x, y, imgW, imgH);
+            }
+        } else {
+            // reset, start from beginning
+            if (x > (CanvasXsize)) {
+                x = CanvasXsize - imgW;
+            }
+            // draw additional image
+            if (x > (CanvasXsize-imgW)) {
+                context.drawImage(imgElem, x - imgW + 1, y, imgW, imgH);
+            }
+        }
+
+        // draw image
+        context.drawImage(imgElem, x, y,imgW, imgH);
+        // amount to move
+        x += dx;
+    }
+
+    </script>
+</body>
+</html>
