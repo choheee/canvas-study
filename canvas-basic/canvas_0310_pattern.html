@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>canvas pattern</title>
+</head>
+<body>
+    <canvas id="canvas" width="500" height="500"></canvas>
+    <svg id="svg1"></svg>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const context = canvas.getContext('2d');
+
+        const svg1 = document.getElementById('svg1');
+        const matrix = svg1.createSVGMatrix();
+
+        const img = new Image();
+        img.src = 'https://mdn.mozillademos.org/files/222/Canvas_createpattern.png';
+
+        img.onload = function() {
+            const pattern = context.createPattern(img, 'repeat');
+            pattern.setTransform(matrix.rotate(-20).scale(1.2));
+            context.fillStyle = pattern;
+            context.fillRect(0, 0, 500, 500);
+        };
+    </script>
+</body>
+</html>
