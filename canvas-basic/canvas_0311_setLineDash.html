@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>canvas setLineDash</title>
+    <style>
+        canvas { background: #eeeeee;}
+    </style>
+</head>
+<body>
+    <p>
+        <h2>Using line dashes</h2>
+        <a href="https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Applying_styles_and_colors#using_line_dashes" target="_blank">example</a>
+    </p>
+    <canvas width="300" height="300"></canvas>
+    <script>
+        const canvas = document.querySelector('canvas');
+        const context = canvas.getContext('2d');
+        let offset = 0;
+
+        function draw() {
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            context.strokeStyle = 'green';
+            context.setLineDash([4, 2]);    //점선길이 간격
+            context.lineDashOffset = -offset; //방향
+            context.strokeRect(50, 50, 200, 200);
+        }
+
+        function march() {
+            offset++;
+            if (offset > 15) {
+                offset = 0;
+            }
+            draw();
+            setTimeout(march, 20);
+        }
+        march();
+
+    </script>
+</body>
+</html>
