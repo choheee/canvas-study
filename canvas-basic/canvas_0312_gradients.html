@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gradients 01 - createLinearGradient</title>
+    <style>
+        canvas { background: #eeeeee;}
+    </style>
+</head>
+<body>
+    <p>
+        <h2>createLinearGradient</h2>
+        <a href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/createLinearGradient#filling_a_rectangle_with_a_linear_gradient" target="_blank">example</a>
+    </p>
+    <canvas width="500" height="300"></canvas>
+
+    <script>
+        const canvas = document.querySelector('canvas');
+        const context = canvas.getContext('2d');
+        
+        // Create a linear gradient
+        // The start gradient point is at x=20, y=0
+        // The end gradient point is at x=220, y=0
+        const gradient = context.createLinearGradient(20, 0, 280, 0);
+
+        // Add three color stops
+        gradient.addColorStop(0, '#1fc9fd');
+        gradient.addColorStop(0.5, '#fc0061');
+        gradient.addColorStop(1, '#4a3cdb');
+
+        // Set the fill style and draw a rectangle
+        context.fillStyle = gradient;
+        context.fillRect(20, 20, 300, 200);
+    </script>
+</body>
+</html>
