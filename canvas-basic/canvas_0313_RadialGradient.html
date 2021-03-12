@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gradients 02 - createRadialGradient</title>
+    <style>
+        canvas {background: #eeeeee;}
+    </style>
+</head>
+<body>
+    <p>
+        <h2>Filling a rectangle with a radial gradient</h2>
+        <a href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/createRadialGradient#filling_a_rectangle_with_a_radial_gradient" target="_blank">example</a>
+    </p>
+    <canvas width="500" height="400"></canvas>
+    <script>
+        const canvas = document.querySelector('canvas');
+        const context = canvas.getContext('2d');
+        
+        // Create a radial gradient
+        // The inner circle is at x=110, y=90, with radius=30
+        // The outer circle is at x=100, y=100, with radius=70
+        const gradient = context.createRadialGradient(160, 140, 30, 170, 150, 100);
+
+        // Add three color stops
+        gradient.addColorStop(0, '#fec180');
+        gradient.addColorStop(.7, '#ff8993');
+        gradient.addColorStop(1, '#6681ea');
+
+        // Set the fill styel and draw a rectangle
+        context.fillStyle = gradient;
+        context.fillRect(20, 20, 300, 300);
+
+    </script>
+
+</body>
+</html>
