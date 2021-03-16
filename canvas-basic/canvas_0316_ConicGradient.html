@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gradient 01-1 - createLinearGradient</title>
+    <style>
+        canvas { background: #eeeeee;}
+    </style>
+</head>
+<body>
+    <p>
+        <h2>A createLinearGradient example</h2>
+        <a href="https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Applying_styles_and_colors#a_createlineargradient_example" target="_blank">example</a>
+    </p>
+    <canvas width="300" height="300"></canvas>
+
+    <script>
+        const canvas = document.querySelector('canvas');
+        const context = canvas.getContext('2d');
+
+         // Create gradients
+        const lingrad = context.createLinearGradient(0, 0, 0, 200);
+        lingrad.addColorStop(0, 'skyblue');
+        lingrad.addColorStop(0.5, '#ffffff');
+        lingrad.addColorStop(0.5, 'yellow');
+        lingrad.addColorStop(1, '#ffffff');
+
+        const lingrad2 = context.createLinearGradient(0, 50, 0, 95);
+        lingrad2.addColorStop(0.5, '#000000');
+        lingrad2.addColorStop(1, 'rgba(0, 0, 0, 0)');
+
+        // assign gradients to fill and stroke styles
+        context.fillStyle = lingrad;
+        context.strokeStyle = lingrad2;
+
+        //draw shapes
+        context.fillRect(10, 10, 180, 180);
+        context.strokeRect(50, 50, 100, 100);
+
+    </script>
+</body>
+</html>
