@@ -7,119 +7,117 @@
     <title>clock animation</title>
     <style>
         canvas { background: #eeeeee;}
-
-
     </style>
 </head>
 <body>
-    <canvas id="canvas" width="600" height="500"></canvas>
-
+    
+    <canvas width="600" height="500"></canvas>
 
     <script>
+        const canvas = document.querySelector('canvas');
+        const context = canvas.getContext('2d');
+        
+        
+        function clock() {
+            let now = new Date();
+            context.save();
+            context.clearRect(0, 0, 250, 250);
+            context.translate(150, 150);
+            context.scale(0.7, 0.7);
+            context.rotate(-Math.PI*2);
+            context.strokeStyle = 'indigo';
+            //context.fillStyle = 'white';
+            context.lineWidth = 8;
+            context.lineCap = 'round';
 
-    const canvas = document.getElementById('canvas');
-    const ctx = canvas.getContext('2d');
+            //시계판 - 시
+            context.save();
+            for (let i = 0; i < 12; i++) {
+                context.beginPath();
+                context.rotate(Math.PI/6);
+                context.moveTo(100,0);
+                context.lineTo(120,0);
+                context.stroke();
+            }
+            context.restore();
 
-    function init(){
-    clock();
-    setInterval(clock,1000);
-    }
-    init();
+            //시계판 - 분
+            context.save();
+            context.lineWidth = 5;
+            for (i = 0; i < 60; i++) {
+                if(i % 5 != 0) {
+                    context.beginPath();
+                    context.moveTo(117,0);
+                    context.lineTo(120,0);
+                    context.stroke();
+                }
+                context.rotate(Math.PI/30);
+            }
+            context.restore();
 
-    function clock(){
-    var now = new Date();
-    ctx.save();
-    ctx.clearRect(0,0,150,150);
-    ctx.translate(75,75);
-    ctx.scale(0.4,0.4);
-    ctx.rotate(-Math.PI/2);
-    ctx.strokeStyle = "black";
-    ctx.fillStyle = "white";
-    ctx.lineWidth = 8;
-    ctx.lineCap = "round";
+            let sec = now.getSeconds();
+            let min = now.getMinutes();
+            let hr = now.getHours();
+            hr = hr >= 12 ? hr - 12 : hr;
+            
+            context.strokeStyle = 'black';
+            
+            //시간 표시 - 시
+            context.save();
+            context.rotate(hr*(Math.PI/6) + (Math.PI/360)*min + (Math.PI/21600)*sec)
+            context.lineWidth = 14;
+            context.beginPath();
+            context.moveTo(-20,0);
+            context.lineTo(80,0);
+            context.stroke();
+            context.restore(); 
 
-    // 시계판 - 시
-    ctx.save();
-    for (var i=0;i<12;i++){
-        ctx.beginPath();
-        ctx.rotate(Math.PI/6);
-        ctx.moveTo(100,0);
-        ctx.lineTo(120,0);
-        ctx.stroke();
-    }
-    ctx.restore();
+             // 시간 표시 - 분
+            context.save();
+            context.rotate((Math.PI/30)*min + (Math.PI/1800)*sec)
+            context.lineWidth = 10;
+            context.beginPath();
+            context.moveTo(-28,0);
+            context.lineTo(112,0);
+            context.stroke();
+            context.restore();
 
-    // 시계판 - 분
-    ctx.save();
-    ctx.lineWidth = 5;
-    for (i=0;i<60;i++){
-        if (i%5!=0) {
-        ctx.beginPath();
-        ctx.moveTo(117,0);
-        ctx.lineTo(120,0);
-        ctx.stroke();
+              // 시간 표시 - 초
+            context.save();
+            context.rotate(sec * Math.PI/30);
+            context.strokeStyle = "#D40000";
+            context.fillStyle = "#D40000";
+            context.lineWidth = 6;
+            context.beginPath();
+            context.moveTo(-30,0);
+            context.lineTo(83,0);
+            context.stroke();
+            context.beginPath();
+            context.arc(0,0,10,0,Math.PI*2,true);
+            context.fill();
+            context.beginPath();
+            context.arc(95,0,10,0,Math.PI*2,true);
+            context.stroke();
+            context.fillStyle = "rgba(0,0,0,0)";
+            context.arc(0,0,3,0,Math.PI*2,true);
+            context.fill();
+            context.restore();
+
+            context.beginPath();
+            context.lineWidth = 15;
+            context.strokeStyle = '#6c5ce7';
+            context.arc(0, 0, 142, 0, Math.PI*2, true);
+            context.stroke();
+
+            context.restore();
         }
-        ctx.rotate(Math.PI/30);
-    }
-    ctx.restore();
 
-    var sec = now.getSeconds();
-    var min = now.getMinutes();
-    var hr  = now.getHours();
-    hr = hr>=12 ? hr-12 : hr;
-
-    ctx.fillStyle = "black";
-
-    // 시간 표시 - 시
-    ctx.save();
-    ctx.rotate( hr*(Math.PI/6) + (Math.PI/360)*min + (Math.PI/21600)*sec )
-    ctx.lineWidth = 14;
-    ctx.beginPath();
-    ctx.moveTo(-20,0);
-    ctx.lineTo(80,0);
-    ctx.stroke();
-    ctx.restore();
-
-    // 시간 표시 - 분
-    ctx.save();
-    ctx.rotate( (Math.PI/30)*min + (Math.PI/1800)*sec )
-    ctx.lineWidth = 10;
-    ctx.beginPath();
-    ctx.moveTo(-28,0);
-    ctx.lineTo(112,0);
-    ctx.stroke();
-    ctx.restore();
-
-    // 시간 표시 - 초
-    ctx.save();
-    ctx.rotate(sec * Math.PI/30);
-    ctx.strokeStyle = "#D40000";
-    ctx.fillStyle = "#D40000";
-    ctx.lineWidth = 6;
-    ctx.beginPath();
-    ctx.moveTo(-30,0);
-    ctx.lineTo(83,0);
-    ctx.stroke();
-    ctx.beginPath();
-    ctx.arc(0,0,10,0,Math.PI*2,true);
-    ctx.fill();
-    ctx.beginPath();
-    ctx.arc(95,0,10,0,Math.PI*2,true);
-    ctx.stroke();
-    ctx.fillStyle = "rgba(0,0,0,0)";
-    ctx.arc(0,0,3,0,Math.PI*2,true);
-    ctx.fill();
-    ctx.restore();
-
-    ctx.beginPath();
-    ctx.lineWidth = 14;
-    ctx.strokeStyle = '#6c5ce7';
-    ctx.arc(0,0,142,0,Math.PI*2,true);
-    ctx.stroke();
-
-    ctx.restore();
-    }
-
+        function init() {
+            clock();
+            setInterval(clock,1000);
+        }
+        init();
+        
     </script>
 </body>
 </html>
