@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adding velocity - window.requestAnimationFrame()</title>
+    <style>
+        canvas { background-color: #eeeeee;}
+    </style>
+</head>
+<body>
+    <p>
+        <h2>Adding velocity</h2>
+        <a href="https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Advanced_animations#adding_velocity" target="_blank">example</a>
+    </p>
+    <canvas width="600" height="400"></canvas>
+
+    <script>
+        const canvas = document.querySelector('canvas');
+        const context = canvas.getContext('2d');
+        let raf;
+
+        let ball = {
+            x: 100,
+            y: 100,
+            vx: 5,
+            vy: 2,
+            radius: 25,
+            color: '#227093',
+            draw: function() {
+                context.beginPath();
+                context.arc(this.x, this.y, this.radius, 0, Math.PI * 2, true);
+                context.closePath();
+                context.fillStyle = this.color;
+                context.fill();
+            }
+        };
+        
+        function draw(){
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            ball.draw();
+            ball.x += ball.vx;
+            ball.y += ball.vy;
+            raf = window.requestAnimationFrame(draw);
+
+            // Boundaries
+            if (ball.y + ball.vy > canvas.height || ball.y + ball.vy < 0) {
+            ball.vy = -ball.vy;
+            }
+            if (ball.x + ball.vx > canvas.width || ball.x + ball.vx < 0) {
+            ball.vx = -ball.vx;
+            }
+        }
+
+        canvas.addEventListener('mouseover', function(e){
+            raf = window.requestAnimationFrame(draw);
+        });
+        canvas.addEventListener('mouseout' , function(e){
+            window.cancelAnimationFrame(raf);
+        })
+        ball.draw();
+    </script>
+</body>
+</html>
