@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trailing effect - window.requestAnimationFrame()</title>
+    <style>
+        canvas { border: 1px solid #cccccc;}
+    </style>
+</head>
+<body>
+    <p>
+        <h2>Trailing effect</h2>
+        <a href="https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Advanced_animations#trailing_effect" target="_blank">example</a>
+    </p>
+    <canvas width="600" height="500"></canvas>
+
+    <script>
+        const canvas = document.querySelector('canvas');
+        const context = canvas.getContext('2d');
+        let raf;
+
+        let ball = {
+            x: 100,
+            y: 100,
+            vx: 5,
+            vy: 2,
+            radius: 25,
+            color: 'blue',
+            draw: function() {
+                context.beginPath();
+                context.arc(this.x, this.y, this.radius, 0, Math.PI*2, true);
+                context.closePath();
+                context.fillStyle = this.color;
+                context.fill();
+            }
+        };
+
+        function draw() {
+            context.fillStyle = 'rgba(255, 255, 255, 0.3)';
+            context.fillRect(0, 0, canvas.width, canvas.height);
+            ball.draw();
+            ball.x += ball.vx;
+            ball.y += ball.vy;
+            raf = window.requestAnimationFrame(draw);
+
+            if (ball.y + ball.vy > canvas.height || ball.y + ball.vy < 0) {
+            ball.vy = -ball.vy;
+            }
+            if (ball.x + ball.vx > canvas.width || ball.x + ball.vx < 0) {
+            ball.vx = -ball.vx;
+            }
+
+            ball.vy *= .99;
+            ball.vy += .25;
+        }
+        canvas.addEventListener('mouseover', function(event){
+            raf = window.requestAnimationFrame(draw);
+        });
+        canvas.addEventListener('mouseout', function(event){
+            window = cancelAnimationFrame(raf);
+        });
+
+        ball.draw();
+
+    </script>
+
+</body>
+</html>
