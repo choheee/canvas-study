@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>particles merge to mouse</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box;}
+        body { overflow: hidden; background-color: black;}
+        canvas { position: absolute; top: 0; left: 0;}
+    </style>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+    <script>
+        const canvas = document.getElementById('canvas');
+        const context = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        let particleArray = [];
+
+        // handle moouse
+        const mouse = {
+            x: null,
+            y: null,
+            radius: 150
+        }
+
+        window.addEventListener('mousemove', function(event) {
+            mouse.x = event.x;
+            mouse.y = event.y;
+            //console.log(mouse.x, mouse.y);
+        })
+
+        context.fillStyle = 'white';
+        context.font = '30px Verdana';
+        context.fillText('A', 0, 30);
+        const data = context.getImageData(0, 0, 100, 100);
+
+        class Particle { 
+            constructor(x, y){
+                this.x = x;
+                this.y = y;
+                this.size = 3;
+                this.baseX = this.x;
+                this.baseY = this.y;
+                this.density =(Math.random() * 30) + 1;
+            }
+            draw() {
+                context.fillStyle = 'red';
+                context.beginPath();
+                context.arc(this.x, this.y, this.size, 0, Math.PI *2);
+                context.closePath();
+                context.fill();
+            }
+            update() {
+                let dx = mouse.x - this.x;
+                let dy = mouse.y - this.y;
+                let distance = Math.sqrt(dx * dx + dy * dy);
+                let forceDirectionX = dx / distance;
+                let forceDirectionY = dy / distance;
+                if (distance < 100) {
+                    this.x += forceDirectionX * 2;
+                    this.y += forceDirectionY * 2;
+                    //this.size = 30;
+                } else {
+                    this.size = 3;
+                }
+            }
+        }
+
+        function init() {
+            particleArray = [];
+            for (let i = 0; i < 1000; i++) {
+                let x = Math.random() * canvas.width;
+                let y = Math.random() * canvas.height;
+                particleArray.push(new Particle(x, y));
+            }
+            //particleArray.push( new Particle(50, 50));
+            //particleArray.push( new Particle(80, 50));
+            
+        }
+        init();
+        console.log(particleArray);
+
+        function  animate() {
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particleArray.length; i++) {
+                particleArray[i].draw();
+                particleArray[i].update();
+            }
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+    </script>
+</body>
+</html>
