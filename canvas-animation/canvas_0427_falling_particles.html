@@ -61,7 +61,7 @@
                 this.y = y;
                 this.size = 10;
                 this.weight = 2;
-                this.directionX = 1;
+                this.directionX = -2;
             }
             update() {
                 if (this.y > canvas.height) {
@@ -69,8 +69,9 @@
                     this.weight = 2;
                     this.x = Math.random() * canvas.width;
                 }
-                this.weight += 0.01;
+                this.weight += 0.15;
                 this.y += this.weight;
+                this.x += this.directionX;
             }
             draw() {
                 context.fillStyle = 'lime';
@@ -80,7 +81,8 @@
                 context.fill();
             }
         }
-        const particle1 = new Particle(400, 100);
+        const particle1 = new Particle(400, 500);
+        const particle2 = new Particle(100, 100);
 
         function animate() {
             context.fillStyle = 'rgba(255, 255, 255, 0.01)';
@@ -88,6 +90,8 @@
 
             particle1.update();
             particle1.draw();
+            particle2.update();
+            particle2.draw();
             requestAnimationFrame(animate);
         }
         animate();
