@@ -7,7 +7,6 @@
     <title>roots effect</title>
     <style>
         #canvas1 { 
-            background: blue;
             position: absolute;
             width: 100%;
             height: 100%;
@@ -23,8 +22,12 @@
         const context = canvas.getContext('2d');
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
+        //context.globalCompositeOperation = 'lighter';
+        //context.globalCompositeOperation = 'xor';
+        //context.globalCompositeOperation = 'destination-over';
 
-        const edge = 60;
+        const edge = 70;
+        let drawing = false;
 
         const mouse = {
             x: null,
@@ -34,7 +37,7 @@
         window.addEventListener('mousemove' ,function (event) {
             mouse.x = event.x;
             mouse.y = event.y;
-            //console.log(mouse.x);           
+            //console.log(drawing);           
         })
 
         class Root {
@@ -64,7 +67,7 @@
                     context.arc(this.x, this.y, radius, 0, 2 * Math.PI);
                     context.fillStyle = this.color;
                     context.fill();
-                    context.strokeStyle ='gold';
+                    context.strokeStyle ='black';
                     context.stroke();
                 }
             }
@@ -72,11 +75,13 @@
 
 
         function branchOut() {
-            const centerX = mouse.x;
-            const centerY = mouse.y;
-            for (let i = 0; i < 3; i++) {
-                const root = new Root(mouse.x, mouse.y, 'pink', centerX, centerY);
-                root.draw();
+            if (drawing === true ) {
+                const centerX = mouse.x;
+                const centerY = mouse.y;
+                for (let i = 0; i < 3; i++) {
+                    const root = new Root(mouse.x, mouse.y, 'orangered', centerX, centerY);
+                    root.draw();
+                }
             }
         }
         window.addEventListener('resize', function () {
@@ -84,10 +89,18 @@
             canvas.height = window.innerHeight;
         });
         window.addEventListener('mousemove', function() {
-            context.fillStyle= 'rgba(0, 0, 255, 0.03)';
-            context.fillRect(0, 0, canvas.width, canvas.height);
+            //context.fillStyle= 'rgba(255, 255, 255, 0.03)';
+            //context.fillRect(0, 0, canvas.width, canvas.height);
             branchOut();
         });
+
+        window.addEventListener('mousedown', function () {
+            drawing = true;
+        });
+        window.addEventListener('mouseup', function () {
+            drawing = false;
+        })
+
 
     </script>
 </body>
