@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>rotating image2</title>
+    <style>
+        canvas { 
+            position: absolute;
+            background-color: skyblue;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas1"></canvas>
+    <script>
+        const canvas = document.getElementById('canvas1');
+        const context = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        const numberOfParticles = 50;
+        let particlesArray = [];
+        const mickey = new Image();
+        mickey.src = 'mickey.png';
+        
+        // context.translate(100, 100);
+        // context.rotate(50 * Math.PI/360);
+        // context.fillRect(0, 0, 100, 150);
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 90 + 20;
+                this.speed = Math.random() * 2 + 0.5;
+                this.angle = Math.random() * 360;
+                this.spin = Math.random() < 0.5 ? -1 : 1;
+            }
+            draw() {
+                context.save();
+                context.translate(this.x, this.y);
+                context.rotate(this.angle * Math.PI/360 * this.spin);
+                context.drawImage(mickey, 0 - this.size/2, 0 - this.size/2, this.size, this.size);
+                context.restore();
+                
+            }
+            update() {
+                this.angle += 2;
+                if (this.y - this.size > canvas.height) {
+                    this.y = 0 - this.size;
+                    this.x = Math.random() * canvas.width;
+                    this.size = Math.random() * 90 + 20;
+                    this.speed = Math.random() * 2 + 0.5;
+                }
+                this.y += this.speed;
+            }
+        }
+        
+        function init() {
+            for (let i = 0; i < numberOfParticles; i++) {
+                particlesArray.push(new Particle());
+            }
+        }
+        init();
+
+        function animate() {
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particlesArray.length; i++) {
+                particlesArray[i].draw();
+                particlesArray[i].update();
+            }
+            requestAnimationFrame(animate);
+        }
+        animate();
+    </script>
+</body>
+</html>
