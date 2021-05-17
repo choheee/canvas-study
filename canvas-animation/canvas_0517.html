@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snow Effect</title>
+    <style>
+        html { background-color: navy;}
+        canvas { z-index: 2;}
+        .text {
+            text-align: center;
+            color: #ffffff;
+            font-size: 28px;
+            width: 100%;
+            top: 130px;
+            position: absolute;
+            margin: 0 auto;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <canvas id="canvas"></canvas>
+        <section class="section">
+            <div class="text">
+                <p>Make it Snow.</p>
+            </div>
+        </section>
+    </div>
+    <script>
+        const canvas = document.getElementById("canvas");
+        const context = canvas.getContext("2d");
+        const particlesOnScreen = 245;
+        let particlesArray = [];
+        let w,h;
+        w = canvas.width = window.innerWidth;
+        h = canvas.height = window.innerHeight;
+
+        function random(min, max) {
+            return min + Math.random() * (max - min + 1);
+        };
+
+        function clientResize(ev){
+            w = canvas.width = window.innerWidth;
+            h = canvas.height = window.innerHeight;
+        };
+        window.addEventListener("resize", clientResize);
+
+        function createSnowFlakes() {
+            for(var i = 0; i < particlesOnScreen; i++){
+                particlesArray.push({
+                    x: Math.random() * w,  
+                    y: Math.random() * h,  
+                    opacity: Math.random(),  
+                    speedX: random(-11, 11),  
+                    speedY: random(7, 15),    
+                    radius:random(0.5, 4.2),
+                })
+            }
+        };
+
+        function drawSnowFlakes(){
+            for(var i = 0; i < particlesArray.length; i++){    
+                var gradient = context.createRadialGradient(  
+                    particlesArray[i].x,   
+                    particlesArray[i].y,   
+                    0,                     
+                    particlesArray[i].x,   
+                    particlesArray[i].y,   
+                    particlesArray[i].radius  
+                    );
+
+                    gradient.addColorStop(0, "rgba(255, 255, 255," + particlesArray[i].opacity + ")");  // white
+                    gradient.addColorStop(.8, "rgba(210, 236, 242," + particlesArray[i].opacity + ")");  // bluish
+                    gradient.addColorStop(1, "rgba(237, 247, 249," + particlesArray[i].opacity + ")");   // lighter bluish
+            
+                    context.beginPath(); 
+                    context.arc(
+                        particlesArray[i].x,  
+                        particlesArray[i].y,
+                        particlesArray[i].radius,
+                        0,
+                        Math.PI*2,
+                        false         
+                    );
+
+                context.fillStyle = gradient;   
+                context.fill();                 
+            }
+        };
+
+        function moveSnowFlakes(){
+            for (var i = 0; i < particlesArray.length; i++) {
+                particlesArray[i].x += particlesArray[i].speedX;     
+                particlesArray[i].y += particlesArray[i].speedY;     
+
+                if (particlesArray[i].y > h) {                                                                               
+                    particlesArray[i].x = Math.random() * w * 1.5;
+                    particlesArray[i].y = -50;
+                }
+            }
+        };
+
+        function updateSnowFall  () {
+            context.clearRect(0, 0, w, h);
+            drawSnowFlakes();
+            moveSnowFlakes();
+        };
+
+        setInterval(updateSnowFall,50);
+        createSnowFlakes();
+
+
+
+    </script>
+</body>
+</html>
