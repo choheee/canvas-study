@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drawing Fractal Trees1</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box;}
+        canvas { position: absolute; background-color: black; width: 100%; height: 100%;}
+        .generate-tree-button { 
+            cursor: pointer; outline: none; border: none; border-radius: 50px;
+            position: absolute; bottom: 20px; z-index: 10; left:50%;
+            transform: translate(-50%, 0); padding: 20px 30px; background: brown;
+            color: black; font-size: 20px; width: 300px; overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+    <canvas></canvas>
+    <button class="generate-tree-button">generate tree button</button>
+    <script>
+        const canvas = document.querySelector('canvas');
+        const context = canvas.getContext('2d');
+        const generateButton = document.querySelector('.generate-tree-button');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        function drawTree(startX, startY, len, angle, branchWidth, color1, color2) {
+            context.beginPath();
+            context.save();
+            context.strokeStyle = color1;
+            context.fillStyle = color2;
+            context.lineWidth = branchWidth;
+            context.translate(startX, startY);
+            context.rotate(angle * Math.PI/180);
+            context.moveTo(0, 0);
+            context.lineTo(0, -len);
+            context.stroke();
+
+            if (len < 7) {
+                context.restore();
+                return;
+            }
+
+            drawTree(0, -len, len * 0.75, angle + 5, branchWidth);
+            drawTree(0, -len, len * 0.75, angle - 5, branchWidth);
+
+            context.restore();
+        }
+        drawTree(canvas.width/2, canvas.height - 80, 120, 0, 2, 'brown', 'green');
+    </script>
+</body>
+</html>
