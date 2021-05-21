@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drawing Fractal Trees2</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box;}
+        canvas { position: absolute; background-color: white; width: 100%; height: 100%;}
+        .generate-tree-button { 
+            cursor: pointer; outline: none; border: none; border-radius: 50px;
+            position: absolute; bottom: 20px; z-index: 10; left:50%;
+            transform: translate(-50%, 0); padding: 20px 30px; background: blue;
+            color: white; font-size: 20px; width: 300px; overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+    <canvas></canvas>
+    <button class="generate-tree-button">generate tree button</button>
+    <script>
+        const canvas = document.querySelector('canvas');
+        const context = canvas.getContext('2d');
+        const generateButton = document.querySelector('.generate-tree-button');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        let curve = 10;
+
+        function drawTree(startX, startY, len, angle, branchWidth, color1, color2) {
+            context.beginPath();
+            context.save();
+            context.strokeStyle = color1;
+            context.fillStyle = color2;
+            context.shadowBlur = 15;
+            context.shadowColor = 'rgba(0, 0, 0, .3';
+            context.lineWidth = branchWidth;
+            context.translate(startX, startY);
+            context.rotate(angle * Math.PI/180);
+            context.moveTo(0, 0);
+            //context.lineTo(0, -len);
+            if (angle > 0) {
+                context.bezierCurveTo(curve, -len/2, curve, -len/2, 0, -len);
+            } else {
+                context.bezierCurveTo(curve, -len/2, -curve, -len/2, 0, -len);
+            }
+            
+            context.stroke();
+
+            if (len < 7) {
+                //leafs
+                context.beginPath();
+                context.arc(0, -len, 10, 0, Math.PI/2);
+                context.fill();
+                context.restore();
+                return;
+            }
+            //curve =(Math.random() * 10) + 10
+
+            drawTree(0, -len, len * 0.75, angle + curve, branchWidth * 0.6);
+            drawTree(0, -len, len * 0.75, angle - curve, branchWidth * 0.6);
+
+            context.restore();
+        }
+        drawTree(canvas.width/2, canvas.height - 80, 120, 0, 20, 'blue', 'orange');
+        
+        function generateRandomTree() {
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            //startX, startY, len, angle, branchWidth, color1, color2
+            let centerPointX = canvas.width/2;
+            let len = (Math.floor(Math.random() * 20) + 100);
+            let angle = 0;
+            let branchWidth = (Math.random() * 70) + 1;
+            let color1 = 'rgba(' + Math.random() *255 + ',' + Math.random() *255 + ',' + Math.random() *255 + ')';
+            let color2 = 'rgba(' + Math.random() *255 + ',' + Math.random() *255 + ',' + Math.random() *255 + ')';
+            
+            generateButton.style.background = color1;
+            curve = (Math.random() * 20) + 2;
+            //curve2 = Math.random() * 50;
+            drawTree(centerPointX, canvas.height - 80, len, angle, branchWidth, color1, color2);
+
+        }
+
+        generateButton.addEventListener('click', generateRandomTree);
+
+    </script>
+</body>
+</html>
