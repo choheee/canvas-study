@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>floating balls</title>
+    <style>
+        body { background: #fff; margin: 0rem; min-height: 100vh;}
+        #canvas { position: absolute; display: block; top: 0; left: 0; filter: blur(2px); }
+    </style>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+    <script>
+        const canvas = document.getElementById('canvas');
+        const context = canvas.getContext('2d');
+
+        let w, h, balls;
+
+        function getRandomColour() {
+            const letters = '0123456789ABCDEF';
+            let colour = '';
+            for (let i = 0; i < 6; i++) {
+                colour += letters[Math.floor(Math.random() * 16)];
+            }
+            return `#${colour}a1`;
+        }
+
+        class Ball {
+            update() {
+                this.border();
+                this.x += this.vec2.x;
+                this.y += this.vec2.y;
+            }
+            border() {
+                const smallest = this.size;
+                const largestW = w-this.size;
+                const largestH = h-this.size;
+                if (this.x >= largestW || this.x <= smallest) { 
+                this.vec2.x *= -1;
+                this.colour = getRandomColour();
+                }
+                if (this.y >= largestH || this.y <= smallest) {
+                this.vec2.y *= -1;
+                this.colour = getRandomColour();
+                }
+                if (this.x > largestW) this.x = largestW;
+                if (this.y > largestH) this.y = largestH;
+                if (this.x < smallest) this.x = smallest;
+                if (this.y < smallest) this.y = smallest;
+            }
+
+            draw() {
+                context.beginPath();
+                context.arc(this.x, this.y, this.size, 0, Math.PI*2);
+                context.closePath();
+                context.fillStyle = this.colour;
+                context.fill();
+            }
+
+            constructor() {
+                this.colour = getRandomColour();
+                this.size = (w/1030)+(Math.random()*6);
+                this.x = w * Math.random();
+                this.y = h * Math.random();
+                this.speed = 0.15;
+                this.direction = Math.floor(Math.random() * 360);
+                const degreesToRadians = this.direction * Math.PI/180;
+                this.vec2 = {
+                    x: Math.cos(degreesToRadians) * this.speed,
+                    y: Math.sin(degreesToRadians) * this.speed
+                }
+            }
+        }
+
+        function loop() {
+            window.requestAnimationFrame(loop);
+            context.clearRect(0, 0, w, h);
+
+            balls.forEach((ball) => {
+                ball.update();
+                ball.draw();
+            })
+        }
+        function preStartSetup() {
+            balls = new Array(100).fill().map(() => {
+            return new Ball();
+        });
+        
+        window.requestAnimationFrame(loop);
+        }
+
+        updateWindow();
+        preStartSetup();
+
+        function updateWindow() {
+            w = canvas.width = window.innerWidth;
+            h = canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener('resize', updateWindow);
+
+
+        
+    </script>
+</body>
+</html>
