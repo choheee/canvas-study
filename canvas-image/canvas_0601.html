@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Crop</title>
+    <style>
+        canvas { border: solid 1px gray; display: block;}
+    </style>
+</head>
+<body>
+    <form action='#' onsubmit="return false;">
+        <input type='file' id='image_file' />
+        <input type='button' value='Load' onclick='LoadImage();' />
+    </form>
+    <canvas id="canvas"></canvas>
+
+
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const context = canvas.getContext('2d');
+        const inputFile = document.getElementById('image_file');
+
+               
+        // 로컬 이미지 파일을 캔버스에 로드한다
+        function LoadImage() {
+            if (typeof window.FileReader !== 'function') {
+                alert("FileReader is not supported");
+                return;
+            }
+
+            let clsFileReader = new FileReader();
+            clsFileReader.onload = function() {
+                img = new Image();
+                img.onload = function() {
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    context.drawImage(img, 0, 0);
+                };
+                img.src = clsFileReader.result;
+            };
+            clsFileReader.readAsDataURL(inputFile.files[0]);
+        }
+
+
+
+    </script>
+</body>
+</html>
