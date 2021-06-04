@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drag boxes</title>
+    <style>
+        * { margin: 0; padding: 0;}
+        canvas {background-color: #eeeeee;}
+    </style>
+</head>
+<body>
+    <canvas id="main" width="500" height="500"></canvas>
+    <script>
+       function CDraw(canvas) {
+           var ret = {
+               ctx:canvas.getContext('2d'),
+               bb:canvas.getBoundingClientRect(),
+               arrBox:[],
+               startX:0,
+               startY:0,
+               isDrag:false,
+               iBoxIndex:0,
+   
+               AddBox : function(iLeft, iTop, iWidth, iHeight){
+                   var clsBox = {left:iLeft, top:iTop, width:iWidth, height:iHeight};
+                   var iBoxCount = this.arrBox.length;
+                   this.arrBox[iBoxCount] = clsBox;
+                   this.DrawBox();
+               },
+               MoveBox : function(iBoxIndex, iX, iY){
+                   this.arrBox[iBoxIndex].left = this.arrBox[iBoxIndex].left + iX;
+                   this.arrBox[iBoxIndex].top = this.arrBox[iBoxIndex].top + iY;
+                   this.DrawBox();
+               },
+               DrawBox : function(){
+                   var iBoxCount = this.arrBox.length;
+                   this.ctx.clearRect(0, 0, canvas.width, canvas.height);
+   
+                   for(var i = 0; i < iBoxCount; ++i) {
+                       var clsBox = this.arrBox[i];
+                       this.ctx.fillRect(clsBox.left, clsBox.top, clsBox.width, clsBox.height);
+                   }
+               },
+               mousedown: function(e){
+                   this.startX = e.clientX - this.bb.left;
+                   this.startY = e.clientY - this.bb.top;
+                   var iBoxCount = this.arrBox.length;
+                   for(var i = 0; i < iBoxCount; ++i) {
+                       var clsBox = this.arrBox[i];
+                       if(this.startX > clsBox.left && this.startX < (clsBox.left + clsBox.width) && this.startY > clsBox.top && this.startY < (clsBox.top + clsBox.height)) {
+                           this.isDrag = true;
+                           this.iBoxIndex = i;
+                           break;
+                       }
+                   }
+               },
+               mousemove: function(e){
+                   if(this.isDrag) {
+                   this.MoveBox( this.iBoxIndex, e.clientX - this.bb.left - this.startX, e.clientY - this.bb.top - this.startY );
+                   this.startX = e.clientX - this.bb.left;
+                   this.startY = e.clientY - this.bb.top;
+                   }
+               },
+               mouseup: function(e){
+                   if(this.isDrag) {
+                   this.MoveBox( this.iBoxIndex, e.clientX - this.bb.left - this.startX, e.clientY - this.bb.top - this.startY );
+                   this.isDrag = false;
+                   }
+               }
+           };
+   
+           // 캔버스의 마우스 이벤트를 객체의 메소드로 전달
+           canvas.addEventListener( "mousemove", function(e){ ret.mousemove(e); } );
+           canvas.addEventListener( "mousedown", function(e){ ret.mousedown(e); } );
+           canvas.addEventListener( "mouseup", function(e){ ret.mouseup(e); } );
+           return ret;
+       }
+   
+       // 객체 생성
+       var clsDraw = new CDraw( document.getElementById("main") );
+   
+       // 객체를 이용해 네모박스 추가
+       clsDraw.AddBox( 20, 20, 100, 100 );
+       clsDraw.AddBox( 200, 200, 100, 100 );
+       clsDraw.AddBox( 300, 300, 100, 100 );
+   
+    </script>
+</body>
+</html>
